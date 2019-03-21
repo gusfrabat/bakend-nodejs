@@ -3,7 +3,7 @@ var express = require('express');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
-var mdAuth = require('../middlewares/auth')
+var mdAuth = require('../middlewares/auth');
 
 var app = express();
 var Usuario = require('../models/usuario');

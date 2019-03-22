@@ -1,7 +1,6 @@
 // imports
 var express = require('express');
 var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
 
 var mdAuth = require('../middlewares/auth');
 
@@ -103,8 +102,7 @@ app.post('/', mdAuth.verificaToken, (req, res) => {
     res.status(201).json({
       ok: true,
       mensaje: 'Usuario creado',
-      data: usuarioGuardado,
-      decode: req.usuario
+      data: usuarioGuardado
     });
   });
 });
@@ -125,9 +123,9 @@ app.delete('/:id', mdAuth.verificaToken, (req, res) => {
     if (!usuarioEliminado) {
       return res.status(400).json({
         ok: false,
-        mensaje: 'No exite usuario con ese id',
+        mensaje: 'No existe usuario con ese id',
         error: {
-          message: 'no exixte el usuario'
+          message: 'no existe el usuario'
         }
       });
     }

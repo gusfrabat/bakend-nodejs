@@ -41,7 +41,7 @@ app.post('/', (rep, res) => {
 
     // crear un token
     usuarioLog.password = ':-)'
-    var token = jwt.sign({ usuario: usuarioLog }, SEED, {expiresIn: 3600}); //1hora
+    var token = jwt.sign({ usuario: usuarioLog }, SEED, {expiresIn: 15600}); //1hora
 
     res.status(200).json({
       ok: true,

@@ -13,7 +13,17 @@ var Usuario = require('../models/usuario');
 // Obtener todos los usuarios
 // =====================================
 app.get('/', (req, res, next) => {
+
+  var desde = req.query.desde || 0;
+  if (desde > 0) {
+    desde = desde -1;
+  }
+  desde = Number(desde );
+  
+
   Usuario.find({}, 'nombres apellidos role img email')
+    .skip(desde)
+    .limit(5)
     .exec(
       (err, usuario) => {
         if (err) {
@@ -23,10 +33,13 @@ app.get('/', (req, res, next) => {
             errors: err
           });
         }
-        res.status(200).json({
-          ok: true,
-          mensaje: 'Petición realizada correctamente  ',
-          data: usuario
+        Usuario.count({}, (err, count) => {
+          res.status(200).json({
+            ok: true,
+            mensaje: 'Petición realizada correctamente  ',
+            data: usuario,
+            count: count
+          });
         });
       });
 });
@@ -52,26 +65,26 @@ app.put('/:id', mdAuth.verificaToken, (req, res) => {
         error: err
       });
     }
-    usuario.nombres = body.nombres,
-      usuario.apellidos = body.apellidos,
-      usuario.role = body.role,
-      usuario.email = body.email,
+    usuario.nombres = body.nombres;
+    usuario.apellidos = body.apellidos;
+    usuario.role = body.role;
+    usuario.email = body.email;
 
-      usuario.save((err, usuarioGuardado) => {
-        if (err) {
-          return res.status(400).json({
-            ok: false,
-            mensaje: 'Error al actualizar usuario',
-            error: err
-          });
-        }
-        usuario.password = ':-)'
-        res.status(200).json({
-          ok: true,
-          mensaje: 'Usuario actualizado',
-          usuario: usuarioGuardado
+    usuario.save((err, usuarioGuardado) => {
+      if (err) {
+        return res.status(400).json({
+          ok: false,
+          mensaje: 'Error al actualizar usuario',
+          error: err
         });
+      }
+      usuario.password = ':-)'
+      res.status(200).json({
+        ok: true,
+        mensaje: 'Usuario actualizado',
+        usuario: usuarioGuardado
       });
+    });
   });
 });
 

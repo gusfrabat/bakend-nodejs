@@ -8,6 +8,43 @@ var app = express();
 var Medico = require('../models/medico');
 
 // =====================================
+// Obtener todos los medicos
+// =====================================
+app.get('/', (req, res, next) => {
+
+  var desde = req.query.desde || 0;
+  if (desde > 0) {
+    desde = desde - 1;
+  }
+  desde = Number(desde);
+
+  Medico.find({}, 'nombre img usuario hospital')
+    .skip(desde)
+    .limit(5)
+    .populate('usuario', 'nombres apellidos email')
+    .populate('hospital')
+    .exec(
+      (err, medico) => {
+        if (err) {
+          return res.status(400).json({
+            ok: false,
+            mensaje: 'Error base de datos',
+            errors: err
+          });
+        }
+        Medico.count({}, (err, count) => {
+
+          res.status(200).json({
+            ok: true,
+            mensaje: 'Petición realizada correctamente  ',
+            data: medico,
+            count: count
+          });
+        });
+      });
+});
+
+// =====================================
 // crear un nuevo medico
 // =====================================
 
@@ -15,9 +52,8 @@ app.post('/', mdAuth.verificaToken, (req, res) => {
   var body = req.body;
   var medico = new Medico({
     nombre: body.nombre,
-    img: body.img,
     usuario: req.usuario._id,
-    hospital: '5c93f48f1f1b4a28d05003d3'
+    hospital: body.hospital
   });
 
   medico.save((err, medicoGuardado) => {
@@ -57,8 +93,9 @@ app.put('/:id', mdAuth.verificaToken, (req, res) => {
         error: err
       });
     }
-    medico.nombre = body.nombre,
-    medico.img = body.img,
+    medico.nombre = body.nombre;
+    medico.usuario = req.usuario._id;
+    medico.hospital = body.hospital;
 
     medico.save((err, medicoGuardado) => {
       if (err) {
@@ -108,27 +145,6 @@ app.delete('/:id', mdAuth.verificaToken, (req, res) => {
 });
 
 
-// =====================================
-// Obtener todos los medicos
-// =====================================
-app.get('/', (req, res, next) => {
-  Medico.find({}, 'nombre img usuario hospital')
-    .exec(
-      (err, medico) => {
-        if (err) {
-          return res.status(400).json({
-            ok: false,
-            mensaje: 'Error base de datos',
-            errors: err
-          });
-        }
-        res.status(200).json({
-          ok: true,
-          mensaje: 'Petición realizada correctamente  ',
-          data: medico
-        });
-      });
-});
 
 
 

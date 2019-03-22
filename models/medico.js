@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
+
+
 var medicoSchema = new Schema({
   nombre: {
     type: String,

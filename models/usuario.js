@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
-
 var Schema = mongoose.Schema;
+
+var uniqueValidator = require('mongoose-unique-validator');
 var rolesValidos = {
   values: [
     'ADMIN_ROL',
@@ -11,14 +11,37 @@ var rolesValidos = {
 };
 
 var usuarioSchema = new Schema({
-  nombres: {type: String, required: [true, 'El nombre es requerido']},
-  apellidos: {type: String, required: [true, 'El apellido es requerido']},
-  email: {type: String, unique: true, required: [true, 'El correo es requerido']},
-  password: {type: String, required: [true, 'La contraseña es requerido']},
-  img: {type: String, required: false},
-  role: {type: String, required: true, default: 'USER_ROL', enum: rolesValidos},
+  nombres: {
+    type: String,
+    required: [true, 'El nombre es requerido']
+  },
+  apellidos: {
+    type: String,
+    required: [true, 'El apellido es requerido']
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: [true, 'El correo es requerido']
+  },
+  password: {
+    type: String,
+    required: [true, 'La contraseña es requerido']
+  },
+  img: {
+    type: String,
+    required: false
+  },
+  role: {
+    type: String,
+    required: true,
+    default: 'USER_ROL',
+    enum: rolesValidos
+  },
 });
 
-usuarioSchema.plugin(uniqueValidator, {message: 'El {PATH} debe ser unico'});
+usuarioSchema.plugin(uniqueValidator, {
+  message: 'El {PATH} debe ser unico'
+});
 
-module.exports = mongoose.model('usuario', usuarioSchema);
+module.exports = mongoose.model('Usuario', usuarioSchema);

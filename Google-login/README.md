@@ -4,3 +4,11 @@ Recuerden que es necesario reconstruir los modulo de node usando el comando:
 ```
 npm install
 ```
+
+## lite-Server
+
+Para correr el lite server y obtener el token.
+Debe abrir la terminal y poner el siguiente comando: 
+```
+npm run dev
+```

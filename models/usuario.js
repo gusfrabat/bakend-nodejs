@@ -17,7 +17,7 @@ var usuarioSchema = new Schema({
   },
   apellidos: {
     type: String,
-    required: [true, 'El apellido es requerido']
+    required: [true, 'El nombre es requerido']
   },
   email: {
     type: String,
@@ -38,6 +38,7 @@ var usuarioSchema = new Schema({
     default: 'USER_ROL',
     enum: rolesValidos
   },
+  google: {type: Boolean, default: false}
 });
 
 usuarioSchema.plugin(uniqueValidator, {

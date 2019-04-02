@@ -21,7 +21,7 @@ app.get('/', (req, res, next) => {
   desde = Number(desde );
   
 
-  Usuario.find({}, 'nombres apellidos role img email')
+  Usuario.find({}, 'nombres apellidos role img email google')
     .skip(desde)
     .limit(5)
     .exec(
@@ -92,7 +92,7 @@ app.put('/:id', mdAuth.verificaToken, (req, res) => {
 // =====================================
 // crear un nuevo ususario
 // =====================================
-app.post('/', mdAuth.verificaToken, (req, res) => {
+app.post('/', (req, res) => {
   var body = req.body;
   var usuario = new Usuario({
     nombres: body.nombres,

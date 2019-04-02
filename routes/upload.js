@@ -80,12 +80,11 @@ function SubirPorTipo(tipo, id, nombreArchivo, res) {
         });
       }
       var pahtViejo = './uploads/usuarios/' + usuario.img;
-      if (fs.statSync(pahtViejo)) {
+      if (fs.existsSync(pahtViejo)) {
         fs.unlinkSync(pahtViejo);
       }
       usuario.img = nombreArchivo;
-      usuario.save((err, usuarioActualizado) => {
-        usuarioActualizado.password = ':-)';
+      usuario.save( (err, usuarioActualizado) => {
         return res.status(200).json({
           ok: true,
           mensaje: 'Imagen de usuario actualizada',
@@ -141,5 +140,6 @@ function SubirPorTipo(tipo, id, nombreArchivo, res) {
     });
   }
 };
+
 
 module.exports = app;
